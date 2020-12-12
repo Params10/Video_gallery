@@ -1,0 +1,96 @@
+<!-- <div fxFill fxLayout="column" fxLayoutAlign="space-between">
+    <div fxLayout="row wrap" fxLayoutGap="16px grid">
+      <div *ngFor="let movie of data">
+        <mat-card class="mat-elevation-z4">
+          <mat-card-header>
+            <mat-card-title>{{movie.title}}</mat-card-title>
+          </mat-card-header>
+          <img mat-card-image src="./../assets/images/mountains.jpg">
+          <mat-card-content>
+            {{movie.description}} &nbsp;
+            {{movie.genre}} 
+          </mat-card-content>
+          <mat-card-actions>
+            
+            <button mat-button>LIKE</button>
+          </mat-card-actions>
+        </mat-card>
+        
+      </div>
+
+     
+    </div>
+  
+    <mat-paginator [length]="heya"
+                  [pageSize]="size"
+                  [pageIndex]="page"
+                  [pageSizeOptions]="[4, 8, 12]"
+                  (page)="getData($event)">
+    </mat-paginator>
+  </div>
+  
+  
+   -->
+
+
+   <div fxFill fxLayout="column" fxLayoutAlign="space-between">
+    <div fxLayout="row wrap">
+      <ng-container *ngFor="let movie of data">
+        <div class="data_card">    
+          <div class="card-view">
+            <div class="card-header deadPool">
+                <div class="card-header-icon">
+                    <a href="#">
+                        <i class="material-icons header-icon">play_arrow</i>
+                    </a>
+                </div>
+            </div>
+            <div class="card-movie-content">
+                <div class="card-movie-content-head">
+                    <a href="#">
+                        <h3 class="card-movie-title">{{movie.title}}</h3>
+                    </a>
+                    
+                </div>
+                <div class="card-movie-info">
+                    <div class="movie-running-time">
+                        <label>Description: </label>
+                        <span> {{movie.description}} &nbsp;</span>
+                    </div>
+                    <div class="movie-running-time">
+                        <label>Genre: </label>
+                        <span>{{movie.genres}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+      </ng-container>
+    </div>
+  
+    <!-- <mat-paginator [length]="data2.length"
+                  [pageSize]="size"
+                  [pageIndex]="page"
+                  [pageSizeOptions]="[4, 8, 12]"
+                  (page)="getData($event)">
+    </mat-paginator> -->
+
+    <mat-card-actions>
+      <button mat-button [disabled]="haspreviouspage" (click)="loadpreviouspage()">Previous Page</button>
+      <button mat-button [disabled]="hasnextpage" (click)="loadnextpage()" >Next Page</button>
+    </mat-card-actions>
+  </div>
+  
+  
+ 
+
+
+
+
+
+
+
+
+
+
+

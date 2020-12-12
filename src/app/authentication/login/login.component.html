@@ -1,0 +1,37 @@
+<div class="login-page">
+  <div class="row justify-content-md-center">
+      <div class="col-md-4">
+          <div class="logo">
+              <img src="./assets/icon.png" width="220px" />
+          </div>
+
+          <form [formGroup]="loginForm">
+
+              <mat-form-field appearance="outline">
+                  <mat-label>User Name</mat-label>
+                  <input matInput placeholder="Enter Your Username" formControlName="username"
+                      [required]="true">
+                  <mat-error *ngIf="loginForm.get('username').hasError('required')"> Username Is Required</mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                  <mat-label>Password </mat-label>
+                  <input matInput [type]="hide ? 'password' : 'text'" placeholder="Enter your Password"
+                      formControlName="password" [required]="true">
+                  <button type="button" mat-icon-button matSuffix (click)="hide = !hide"
+                      [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                      <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                  </button>
+                  <mat-error *ngIf="loginForm.get('password').hasError('required')"> Password Is Required</mat-error>
+              </mat-form-field>
+
+
+
+              <div class="col-md-12 text-center">
+                  <button type="submit" [disabled]="isRequested" mat-flat-button color="primary" class="mat-custom-button" (keyup.enter)="onLoggedin()"
+                      (click)="onLoggedin()">Login</button>
+              </div>
+          </form>
+      </div>
+  </div>
+</div>
