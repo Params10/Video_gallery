@@ -31,13 +31,15 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 import {MoviesComponent} from './layout/movies/movies.component';
 import {CdkTableModule} from '@angular/cdk/table';
 import {FlexLayoutModule} from '@angular/flex-layout';
+import { DialogboxComponent } from './layout/dialogbox/dialogbox.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    MoviesComponent
+    MoviesComponent,
+    DialogboxComponent
     
   ],
   exports: [

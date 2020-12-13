@@ -13,6 +13,8 @@ export class LoginService {
 
     login(loginDTO): Observable<HttpResponse<any>> {
         const url = Configuration.LOGIN_USER_URL;
+        console.log(loginDTO);
+        
         return this.http.post(url, loginDTO, { observe: 'response' });
 
     }

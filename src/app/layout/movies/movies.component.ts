@@ -6,6 +6,8 @@ import {AuthUtils} from 'src/app/utils/authutils';
 import {MessageService} from 'src/app/services/message.service'
 import {StaticVariables} from 'src/app/utils/staticvariables';
 import {map, startWith} from 'rxjs/operators';
+import {MatDialog} from '@angular/material/dialog';
+import {DialogboxComponent} from 'src/app/layout/dialogbox/dialogbox.component'
 
 @Component({
   selector: 'app-movies',
@@ -17,7 +19,7 @@ export class MoviesComponent implements OnInit {
     constructor(private router: Router,
       private movieservice: MovieService,
       private authUtils: AuthUtils,
-      private messageService: MessageService) { }
+      private messageService: MessageService,public dialog: MatDialog) { }
 
   data:Array<Movie>;
   data2: Array<Movie>;
@@ -29,50 +31,21 @@ export class MoviesComponent implements OnInit {
    haspreviouspage =false;
    hasnextpage =false;
    pagenumber = null;
-
+  showrefreshbutton = false ; 
   ngOnInit(): void {
     this.servicecall(null);
-    // this.movieservice.movies(this.authUtils.getCurrentUser(),null).subscribe(resp => {
-      
-    // //  console.log("this is the data2 "+resp.body.data);
-       
-    //     this.singlepagedata = resp.body;
-    //     console.log("singlepagedata previous"+ this.singlepagedata.next);
-    //     this.data2 = this.singlepagedata.results;
-    //     console.log("length of data 2 "+ this.data2.length);
-    //      this.heya =  this.data2.length;
 
-       
-        
-       
-    //    if (resp.body.is_success === false) {
-    //     this.messageService.errorsMessage(resp.body.error);
-    //     this.messageService.errorMessage(resp.body.error.message); 
-    //    console.log("here");
-
-    //     this.router.navigate(['/login']);
-        
-    //   }
-    //  console.log(this.data2);
-    //   this.getData({pageIndex: this.page, pageSize: this.size});
-      
-    //   for (let i = 0; i < this.data.length; i++) {
-
-          
-    //       this.data[i].description = this.shorten(this.data[i].description,' ');
-    //      if(this.singlepagedata.previous == null )
-    //      { 
-    //        this.haspreviouspage = true;
-
-    //      }
-          
-    //   }
-     
-    // });
   
   }
   
-    
+  openDialog(movieobj) {
+    this.movieservice.setcurrentmovie(movieobj);
+    const dialogRef = this.dialog.open(DialogboxComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
   
 
 
@@ -91,23 +64,18 @@ export class MoviesComponent implements OnInit {
     if (str.length <= 100) return str;
     return str.substring(0, str.lastIndexOf(separator, 100));
   }
- // maximum number of characters to extract
-
-// if(.length > trimmedString.length){
-//     //trim the string to the maximum length
-//     var trimmedString = yourString.substr(0, maxLength);
-
-//     //re-trim if we are in the middle of a word and 
-//     trimmedString = trimmedString.substr(0, Math.min(trimmedString.length, trimmedString.lastIndexOf(" ")))
-// }
+ 
 servicecall(pagenumberfinal)
 {
   
   this.movieservice.movies(this.authUtils.getCurrentUser(),pagenumberfinal).subscribe(resp => {
       
     //  console.log("this is the data2 "+resp.body.data);
-       
+    if (resp && resp.body && resp.body.is_success == true)
+    this.singlepagedata = new MoviesList();
         this.singlepagedata = resp.body;
+        console.log(this.singlepagedata);
+        console.log(resp.body);
         console.log("singlepagedata previous"+ this.singlepagedata.next);
         this.data2 = this.singlepagedata.results;
         console.log("length of data 2 "+ this.data2.length);
@@ -121,7 +89,7 @@ servicecall(pagenumberfinal)
         this.messageService.errorMessage(resp.body.error.message); 
        console.log("here");
 
-        this.router.navigate(['/login']);
+        this.showrefreshbutton = true;
         
       }
      console.log(this.data2);
@@ -130,8 +98,9 @@ servicecall(pagenumberfinal)
       for (let i = 0; i < this.data.length; i++) {
 
           
-          this.data[i].description = this.shorten(this.data[i].description,' ');
-         if(this.singlepagedata.previous == null )
+          this.data[i].trimmeddescription = this.shorten(this.data[i].description,' ');
+          
+         if(this.singlepagedata.previous == "" )
          { 
            this.haspreviouspage = true;
 
@@ -139,7 +108,7 @@ servicecall(pagenumberfinal)
          else{
           this.haspreviouspage = false;
          }
-         if(this.singlepagedata.next == null )
+         if(this.singlepagedata.next == "" )
          { 
            this.hasnextpage = true;
 
@@ -171,6 +140,12 @@ loadpreviouspage()
   else{
   this.servicecall(this.singlepagedata.previous.substring(this.singlepagedata.previous.length - 1, this.singlepagedata.previous.length));
   }
+}
+onrefresh()
+{
+ var  temp = parseInt(this.singlepagedata.previous.substring(this.singlepagedata.previous.length - 1, this.singlepagedata.previous.length)) + 1;
+
+  this.servicecall(temp.toString());
 }
 }
 

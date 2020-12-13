@@ -10,9 +10,10 @@ export class MoviesList {
 export class Movie{
     title : string;
     description : string ; 
+    trimmeddescription:string;
     genres : string ; 
     uuid:any;
-
+   
 }
 
 
